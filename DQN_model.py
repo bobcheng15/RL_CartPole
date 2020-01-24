@@ -1,4 +1,4 @@
-from tensorflow import *
+import tensorflow as tf
 import random
 import numpy as np
 
@@ -11,25 +11,25 @@ EP_MIN     = 0.1
 EP_INIT    = 1.0
 
 class Agent:
-    def __init__(self, observation_space, action_space, epsilon):
+    def __init__(self, observation_space, action_space):
         self.observation_space = observation_space
         self.action_space = action_space
-        self.epsilon = epsilon;
+        self.epsilon = EP_INIT;
 
         self.epsilon = EP_INIT;
         self.replay_memory = []
 
-        self.model = Sequential()
-        self.model.add(Dense(24, input_shape=(observation_space,), activation="relu"))
-        self.model.add(Dense(24, activation="relu"))
-        self.model.add(Dense(action_space, activatiom="linear"))
-        self.model.compile(loss="mse", optimizer=Adam(lr=LEARNING_RATE))
+        self.model = tf.keras.models.Sequential()
+        self.model.add(tf.keras.layers.Dense(24, input_shape=(observation_space,), activation="relu"))
+        self.model.add(tf.keras.layers.Dense(24, activation="relu"))
+        self.model.add(tf.keras.layers.Dense(action_space, activation="linear"))
+        self.model.compile(loss="mse", optimizer=tf.keras.optimizers.Adam(learning_rate=0.001))
 
-        self.target_model = Sequential()
-        self.target_model.add(Dense(24, input_shape=(observation_space,), activation="relu"))
-        self.target_model.add(Dense(24, activation="relu"))
-        self.target_model.add(Dense(action_space, activatiom="linear"))
-        self.target_model.compile(loss="mse", optimizer=Adam(lr=LEARNING_RATE))
+        self.target_model =  tf.keras.models.Sequential()
+        self.target_model.add(tf.keras.layers.Dense(24, input_shape=(observation_space,), activation="relu"))
+        self.target_model.add(tf.keras.layers.Dense(24, activation="relu"))
+        self.target_model.add(tf.keras.layers.Dense(action_space, activation="linear"))
+        self.target_model.compile(loss="mse", optimizer=tf.keras.optimizers.Adam(learning_rate=0.001))
 
 
     def add_to_replay(self, information):
